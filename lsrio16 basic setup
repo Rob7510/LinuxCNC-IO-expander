@@ -1,5 +1,6 @@
+# updated 23-01-2024
 # configure the 16 line IO port expander
-# 
+# This test uses a default (out mode) parallel port adapter
 loadrt lsrio16 count=1
 addf lsrio16.0 servo-thread
 # The IO expander 153-03 REV A needs the fixes below as IO polarity inversed
@@ -10,8 +11,8 @@ net lsrio-output-stream lsrio16.0.ser-out   => parport.1.pin-07-out
 setp parport.1.pin-07-out-invert FALSE
 net lsrio-clock-output  lsrio16.0.clk       => parport.1.pin-08-out
 net lsrio-data-latch    lsrio16.0.latch     => parport.1.pin-09-out
-# net lsrio-input-stream  parport.1.pin-17-in-not <= lsrio16.0.ser-in
-net lsrio-input-stream  parport.1.pin-17-in <= lsrio16.0.ser-in
+# net lsrio-input-stream  parport.1.pin-15-in-not <= lsrio16.0.ser-in
+net lsrio-input-stream  parport.1.pin-15-in <= lsrio16.0.ser-in
 # Note:
 # the lsrio16.0.in-XX signal sets an OUTPUT on the IO-Mux hardware
 # the lsrio16.0.out-XX signal READS an INPUT on the IO-Mux hardware
