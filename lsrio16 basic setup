@@ -1,0 +1,54 @@
+# configure the 16 line IO port expander
+# 
+loadrt lsrio16 count=1
+addf lsrio16.0 servo-thread
+# The IO expander 153-03 REV A needs the fixes below as IO polarity inversed
+# The 153-03 Rev D is correct
+
+net lsrio-output-stream lsrio16.0.ser-out   => parport.1.pin-07-out
+# setp parport.1.pin-07-out-invert TRUE
+setp parport.1.pin-07-out-invert FALSE
+net lsrio-clock-output  lsrio16.0.clk       => parport.1.pin-08-out
+net lsrio-data-latch    lsrio16.0.latch     => parport.1.pin-09-out
+# net lsrio-input-stream  parport.1.pin-17-in-not <= lsrio16.0.ser-in
+net lsrio-input-stream  parport.1.pin-17-in <= lsrio16.0.ser-in
+# Note:
+# the lsrio16.0.in-XX signal sets an OUTPUT on the IO-Mux hardware
+# the lsrio16.0.out-XX signal READS an INPUT on the IO-Mux hardware
+# No leading 0 in the lsrio16 input and output address
+#
+net muxout-00 => lsrio16.0.in-0
+net muxout-01 => lsrio16.0.in-1
+net muxout-02 => lsrio16.0.in-2
+net muxout-03 => lsrio16.0.in-3
+net muxout-04 => lsrio16.0.in-4
+net muxout-05 => lsrio16.0.in-5
+net muxout-06 => lsrio16.0.in-6
+net muxout-07 => lsrio16.0.in-7
+net muxout-08 => lsrio16.0.in-8
+net muxout-09 => lsrio16.0.in-9
+net muxout-10 => lsrio16.0.in-10
+net muxout-11 => lsrio16.0.in-11
+net muxout-12 => lsrio16.0.in-12
+net muxout-13 => lsrio16.0.in-13
+net muxout-14 => lsrio16.0.in-14
+net muxout-15 => lsrio16.0.in-15
+
+# get external signals in
+net muxinput-00 <= lsrio16.0.out-0
+net muxinput-01 <= lsrio16.0.out-0
+net muxinput-02 <= lsrio16.0.out-0
+net muxinput-03 <= lsrio16.0.out-0
+net muxinput-04 <= lsrio16.0.out-0
+net muxinput-05 <= lsrio16.0.out-0
+net muxinput-06 <= lsrio16.0.out-0
+net muxinput-07 <= lsrio16.0.out-0
+net muxinput-08 <= lsrio16.0.out-0
+net muxinput-09 <= lsrio16.0.out-0
+net muxinput-10 <= lsrio16.0.out-0
+net muxinput-11 <= lsrio16.0.out-0
+net muxinput-12 <= lsrio16.0.out-0
+net muxinput-13 <= lsrio16.0.out-0
+net muxinput-14 <= lsrio16.0.out-0
+net muxinput-15 <= lsrio16.0.out-0
+

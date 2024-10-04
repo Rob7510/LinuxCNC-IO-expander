@@ -1,0 +1,105 @@
+# HAL to test LSRIO16 multiplexer hardware using parport 0 in x mode
+# Run in a terminal windoww as ~$ halrun -I -f ptest.hal
+# lsrio.xml in same directory contains the panel images
+loadrt hal_parport cfg="0 x"
+# loadrt hal_parport cfg="0x378 x"
+
+loadusr -Wn muxpanel pyvcp -c muxpanel lsrio16.xml
+loadrt threads name1=panelclk period1=1000000 name2=muxclk period2=100000
+addf parport.0.read panelclk
+addf parport.0.write panelclk
+
+loadrt lsrio16 count=1
+addf lsrio16.0 muxclk
+# configure 16 line port expander
+# the 3 outputs and the data input are on parport.1
+
+
+net lsrio-output-stream lsrio16.0.ser-out   => parport.0.pin-07-out
+net lsrio-clock-output  lsrio16.0.clk       => parport.0.pin-08-out
+net lsrio-data-latch    lsrio16.0.latch     => parport.0.pin-09-out
+net lsrio-input-stream  parport.0.pin-10-in => lsrio16.0.ser-in
+
+net lsrio-input-stream   => lsrio16.0.ser-in
+net lsrio-output-stream  <= lsrio16.0.ser-out
+net lsrio-clock-output   <= lsrio16.0.clk
+net lsrio-data-latch     <= lsrio16.0.latch
+
+
+net pin00 PortTest.btn00 parport.0.pin-00-out PortTest.led-00
+net pin01 PortTest.btn01 parport.0.pin-01-out PortTest.led-01
+net pin02 PortTest.btn02 parport.0.pin-02-out PortTest.led-02
+net pin03 PortTest.btn03 parport.0.pin-03-out PortTest.led-03
+net pin04 PortTest.btn04 parport.0.pin-04-out PortTest.led-04
+net pin05 PortTest.btn05 parport.0.pin-05-out PortTest.led-05
+net pin06 PortTest.btn06 parport.0.pin-06-out PortTest.led-06
+net pin07 PortTest.btn07 parport.0.pin-07-out PortTest.led-07
+net pin08 PortTest.btn08 parport.0.pin-08-out PortTest.led-08
+net pin09 PortTest.btn09 parport.0.pin-09-out PortTest.led-09
+net pin10 PortTest.btn10 parport.0.pin-10-out PortTest.led-10
+net pin11 PortTest.btn11 parport.0.pin-11-out PortTest.led-11
+net pin12 PortTest.btn12 parport.0.pin-12-out PortTest.led-12
+net pin13 PortTest.btn13 parport.0.pin-13-out PortTest.led-13
+net pin14 PortTest.btn14 parport.0.pin-14-out PortTest.led-14
+net pin15 PortTest.btn15 parport.0.pin-15-out PortTest.led-15
+
+
+
+
+net pin10 parport.0.pin-10-in PortTest.led-10
+net pin11 parport.0.pin-11-in PortTest.led-11
+net pin12 parport.0.pin-12-in PortTest.led-12
+net pin13 parport.0.pin-13-in PortTest.led-13
+net pin15 parport.0.pin-15-in PortTest.led-15
+
+start
+
+# loadusr halmeter
+# HAL to test IOmux hardware
+# system uses 2 X-mode LPTs
+# Created 7 oct 2023
+
+
+
+loadrt stepgen step_type=0,0,0,0
+#
+
+
+# the lsrio16.0.in-XX signal SETS 1 or 0 on an IO-mux PCB output pin 
+# the lsrio16.0.out-XX signal READS 1 or 0 from an IO-mux PCB input pin
+# No leading 0 in the lsrio16 input and output address number
+# set output according to net name:
+net muxout-00 => lsrio16.0.in-0
+net muxout-01 => lsrio16.0.in-1
+net muxout-02 => lsrio16.0.in-2
+net muxout-03 => lsrio16.0.in-3
+net muxout-04 => lsrio16.0.in-4
+net muxout-05 => lsrio16.0.in-5
+net muxout-06 => lsrio16.0.in-6
+net muxout-07 => lsrio16.0.in-7
+net muxout-08 => lsrio16.0.in-8
+net muxout-09 => lsrio16.0.in-9
+net muxout-10 => lsrio16.0.in-10
+net muxout-11 => lsrio16.0.in-11
+net muxout-12 => lsrio16.0.in-12
+net muxout-13 => lsrio16.0.in-13
+net muxout-14 => lsrio16.0.in-14
+net muxout-15 => lsrio16.0.in-15
+# get external signals in
+net muxinput-00 <= lsrio16.0.out-0
+net muxinput-01 <= lsrio16.0.out-1
+net muxinput-02 <= lsrio16.0.out-2
+net muxinput-03 <= lsrio16.0.out-3
+net muxinput-04 <= lsrio16.0.out-4
+net muxinput-05 <= lsrio16.0.out-5
+net muxinput-06 <= lsrio16.0.out-6
+net muxinput-07 <= lsrio16.0.out-7
+net muxinput-08 <= lsrio16.0.out-8
+net muxinput-09 <= lsrio16.0.out-9
+net muxinput-10 <= lsrio16.0.out-10
+net muxinput-11 <= lsrio16.0.out-11
+net muxinput-12 <= lsrio16.0.out-12
+net muxinput-13 <= lsrio16.0.out-13
+net muxinput-14 <= lsrio16.0.out-14
+net muxinput-15 <= lsrio16.0.out-15
+
